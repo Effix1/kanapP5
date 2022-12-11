@@ -15,22 +15,27 @@ fetch("http://localhost:3000/api/products")
         let items = document.getElementById('items')
         let article = document.createElement('article')
         let titre = document.createElement('h1')
-        let prix = document.createElement('h2')
-        let image = document.createElement('img')
+        let description = document.createElement('h2')
+        let image = document.createElement('img') 
+        let lien = document.createElement('a')
         image.setAttribute('src', produit.imageUrl)
-        image.setAttribute('title', produit.description)
+        image.setAttribute('title', produit.altTxt)
+        image.setAttribute('alt', produit.altTxt)        
         image.style.width=('100%');
         image.style.height=('100%');
         items.appendChild(article);
+        article.appendChild(lien)
         article.appendChild(titre)
-        article.appendChild(prix)
+        
+        article.appendChild(description)
         article.appendChild(image)
         article.style.width=('22%')
         
         titre.style.marginTop=('0')
         titre.style.maxWidth=('auto')
         titre.innerText = produit.name
-        prix.innerText = produit.price
+        description.innerText = produit.description
+        
         
        });
     })
