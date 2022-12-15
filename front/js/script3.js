@@ -9,7 +9,7 @@ fetch("http://localhost:3000/api/products")
 function ajoutProduits(produit){
     let id = produit[0]._id
     let link = makeLink(id)
-    appendChildren(link)
+    appendChild(link)
 }    
    
    

@@ -6,40 +6,44 @@ fetch("http://localhost:3000/api/products")
         }
     })
     .then(function(products){
-        const nombreDeProduits = products.length;
-        console.log(nombreDeProduits)
-        for (let produits of products) {
-            console.log(produits)
-        }
+        
        products.forEach(produit => {
-            
-        let items = document.getElementById('items')
-        let article = document.createElement('article')
-        let titre = document.createElement('h3')
-        let description = document.createElement('h2')
-        let image = document.createElement('img') 
-        let lien = document.createElement('a')
-        lien.setAttribute('href', produit.imageUrl);
-        image.setAttribute('src', produit.imageUrl)
-        image.setAttribute('title', produit.altTxt)
-        image.setAttribute('alt', produit.altTxt)        
-        image.style.width=('100%');
-        image.style.height=('100%');
-        items.appendChild(article);
-        //items.appendChild(lien)
-        article.appendChild(titre)
-        lien.text = produit.name
+
+        const items = document.getElementById('items')
+        const link = document.createElement('a');
+        link.href = "./product.html?id=" + produit._id
+        const article = document.createElement('article');
+        const image = document.createElement('img');
+        const h3 = document.createElement('h3');
+        const paragraph = document.createElement('p')
         
-        article.appendChild(description)
-        article.appendChild(image)
-        article.style.width=('22%')
+        const creationImage = () => {
+            image.setAttribute('src', produit.imageUrl)
+            image.setAttribute('alt', produit.altTxt)
+        }
         
-        titre.style.marginTop=('0')
-        titre.style.maxWidth=('auto')
-        titre.innerText = produit.name
-        description.innerText = produit.description
+        const creationH3 = () => {
+            h3.innerText = (produit.name)
+        }
         
+        const creationParagraph = () => {
+            paragraph.innerText = (produit.description)
+        }
         
-       });
+        const creationArticle = () => {
+         items.appendChild(link)
+        link.appendChild(article)
+        article.appendChild(image);
+        article.appendChild(h3)
+        article.appendChild(paragraph)
+        creationImage();
+        creationH3();
+        creationParagraph();
+        }
+        creationArticle();
+    }); 
     })
-   
+
+    
+    
+
