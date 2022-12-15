@@ -31,7 +31,7 @@ fetch("http://localhost:3000/api/products")
         }
         
         const creationArticle = () => {
-         items.appendChild(link)
+        items.appendChild(link)
         link.appendChild(article)
         article.appendChild(image);
         article.appendChild(h3)
