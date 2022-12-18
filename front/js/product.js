@@ -1,38 +1,39 @@
-let pageProduitUrl = window.location.href
+let pageProduitUrl = window.location.href;
 let url = new URL(pageProduitUrl);
-const id = url.searchParams.get('id')
-console.log(id)
-let image = document.createElement('img')
+const id = url.searchParams.get('id');
 
-let itemImage = document.getElementById('item__img')
+
+
+
 fetch("http://localhost:3000/api/products")
 .then(function(res){
     if (res.ok) {
-        return res.json();
-        
+        return res.json();     
     }    
 })    
 .then(function(products){
+    const description = document.getElementById('description')
+    const itemImg = document.getElementsByClassName('item__img')
+    const firstItem = itemImg[0];
+    const image = document.createElement('img')
+
     
-    console.log(products[1]) 
-    products.forEach(produit => {
-        let productId = produit.id;
-        for ( let i in produit.id){
-            console.log(i)
-        }
-        console.log(produit._id)
-        if (id==productId) {
+    for (let produit of products){
+        
+        if (produit._id==id){
+            console.log(produit);
+            description.innerText = produit.description
+            firstItem.appendChild (image)
             image.setAttribute('src', produit.imageUrl)
-            itemImage.appendChild(image)
+            console.log(firstItem)
+            
+           
+        }else {
         }
-    });                                                                            
-    
-    
-    
-    
-    return products
+        /*console.log(target.imageUrl)    
+        console.log(target.name)
+        itemImage.appendChild(image)*/
+   }
 }
-
-
 )    
 
