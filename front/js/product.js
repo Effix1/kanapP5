@@ -16,28 +16,54 @@ fetch("http://localhost:3000/api/products")
     const title = document.getElementById('title')
     const price = document.getElementById('price')
 
-    const itemImg = document.getElementsByClassName('item__img')
-    const firstItem = itemImg[0];
-    const image = document.createElement('img')
+   
 
     
     for (let produit of products){
         
-        if (produit._id==id){
-            console.log(produit);
-            description.innerText = produit.description
-            title.innerText = produit.name
-            price.innerText = produit.price
-            firstItem.appendChild (image)
+        const itemImg = document.getElementsByClassName('item__img')
+        const firstItem = itemImg[0];
+        const image = document.createElement('img')
+        const creaImage = () => {
             image.setAttribute('src', produit.imageUrl)
+            image.setAttribute('alt',produit.altTxt)
+            firstItem.appendChild (image)
             console.log(firstItem)
-            
-           
-        }else {
         }
-        /*console.log(target.imageUrl)    
-        console.log(target.name)
-        itemImage.appendChild(image)*/
+
+        const creaItem = () => {
+            if (produit._id==id){
+                console.log(produit);
+                
+                creaImage();
+                description.innerText = produit.description
+                title.innerText = produit.name
+                price.innerText = produit.price
+                
+                let couleurs = produit.colors;
+                for(let couleur of couleurs){
+                    let colors = document.getElementById('colors')
+                    let option = document.createElement('option')
+                    colors.appendChild(option)
+                    option.innerText = couleur
+
+
+                }
+                
+
+                    
+                ;
+                
+            }else {
+            }
+        }
+
+        
+        //colors();
+        const soloItem = creaItem();
+
+     
+        
    }
 }
 )    
