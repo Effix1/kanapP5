@@ -1,18 +1,20 @@
 let url = new URL(window.location.href);
 const id = url.searchParams.get('id');
 
-fetch("http://localhost:3000/api/products")
+fetch("http://localhost:3000/api/products/"+ id)
 .then(function(res){
     if (res.ok) {
         return res.json();     
     }    
 })    
-.then(function(products){
+.then(function(produit){
+    console.log(produit)
+
     const description = document.getElementById('description')
     const title = document.getElementById('title')
     const price = document.getElementById('price')
 
-    for (let produit of products){
+    
         
         const itemImg = document.getElementsByClassName('item__img')
         const firstItem = itemImg[0];
@@ -37,7 +39,7 @@ fetch("http://localhost:3000/api/products")
         }
 
         const creaItem = () => {
-            if (produit._id==id){
+            
                 //console.log(produit);
                 choixCouleur();
                 creaImage();
@@ -45,52 +47,56 @@ fetch("http://localhost:3000/api/products")
                 title.innerText = produit.name
                 price.innerText = produit.price
                 //console.log(price)
+                const addToCart = document.getElementById('addToCart')
+                addToCart.addEventListener("click", (e)=>{
+                    const quantity = parseInt(document.querySelector('#quantity').value) 
+                    
+                    const colors = document.querySelector('#colors').value
+                    if ( colors=="" && quantity == 0){
+                        alert('veuillez choisir une couleur et une quantité SVP ')
+                     }else if (quantity == 0)  {
+                         alert('veuillez choisir une quantity SVP')
+                     }else if (colors == ""){
+                         alert('veuillez choisir une couleur SVP')
+                     }
+                     else {
+                         //alert('Vous avez choisi ' + quantity + " "+produit.name + "" + colors)
+                        const cart = JSON.parse (localStorage.getItem('caddy'))|| []
+                        console.log(cart)
+                        const identifiantExistant =cart.findIndex(item =>item.id == id && item.color == colors)
+                        console.log(identifiantExistant)
+                        if (identifiantExistant==-1) {
+                            const cartItem = {
+                                id:id,
+                                color:colors,
+                                quantity:quantity,
+                            }
+                            cart.push(cartItem)
+                        }else {
+                            cart[identifiantExistant].quantity+=quantity
+                        }
+                        
+                        localStorage.setItem('caddy', JSON.stringify(cart))
+                        }
+                     //localStorage.setItem(id)
                      
-            }else {
-            }
+                     
+                 } )
+                     
+           
         }
         const soloItem = creaItem()
 
 
-   }
+   
 
    //     ****************       écoute du produit    *********************
-   const cart = document.getElementById('addToCart')
-   cart.addEventListener("click", (e)=>{
-       const quantity = document.querySelector('#quantity').value
-       const colors = document.querySelector('#colors').value
-       if (colors == null || colors=="" && quantity == 0){
-           alert('veuillez choisir une couleur et une quantité SVP ')
-        }else if (quantity == 0)  {
-            alert('veuillez choisir une quantity SVP')
-        }else if (colors == ""){
-            alert('veuillez choisir une couleur SVP')
-        }
-        else {}
-        localStorage.setItem(id)
-       
-       
-   } )
-
+    
 
 
 
    //        *****************       array du produit *****************
-   const commande = {
-    id: id,
-    //name: produit.name,
-    
-}
-//console.log(commande)
-//                                mise en local storage                            //
-//console.log (document.getElementById("colors").value);
-//const quantity = (document.getElementById("quantity").value);
-//console.log (quantity)
-localStorage.setItem = (id, colors, quantity)
-//localStorage.countProduct(("quantity").value)
-//const quantite = document.querySelector('#itemQuantity').value;
-//console.log(quantite)
-
+  
 }
 )    
 
