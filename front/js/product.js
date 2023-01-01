@@ -69,10 +69,7 @@ fetch("http://localhost:3000/api/products/"+ id)
                         id:id,
                         color:colors,
                         quantity:quantity,
-                        image:imageProduit,
-                        description:textAlt,
-                        nom:nom,
-                        prix:prixUnitaire,
+                        
                         
                     }
                     console.log(prixUnitaire)
