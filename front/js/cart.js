@@ -7,7 +7,7 @@ cart.forEach(panier => {
     if (res.ok) {
       return res.json();     
     } 
-  })
+  } )
   .then(function(produit){
 
     //console.log(produit)
@@ -17,6 +17,8 @@ cart.forEach(panier => {
     const sectionItem = document.getElementById('cart__items')
     const article = sectionItem.appendChild(creaArticle)
     article.classList.add('cart__item')
+    article.setAttribute('data-id',panier.id)
+    article.setAttribute('data-color',panier.color)
     
     //                        creation div image 
         const divImage = document.createElement('div')
@@ -55,11 +57,42 @@ cart.forEach(panier => {
       let divSettings =  divContent.appendChild(creaDivSettings)
       divSettings.classList.add('cart__item__content__settings')
 
+      //                   creation div settings quantity 
+      const creaDivSettingsQuantity = document.createElement('div')
+      let divSettingsQuantity = divSettings.appendChild(creaDivSettingsQuantity)
+      divSettingsQuantity.classList.add('cart__item__content__settings__quantity')
+
+
       //                   creation settings quantity
       const creaParagrapheQty = document.createElement('p')
-      let paragrapheQty = divSettings.appendChild(creaParagrapheQty)
-      paragrapheQty.innerText = (panier.quantity)
-       // console.log(divDescription)
+      let paragrapheQty = divSettingsQuantity.appendChild(creaParagrapheQty)
+     
+      paragrapheQty.innerText = ('Qté : ')
+
+      //                  creation settings input
+      const creaInputQty = document.createElement('input')
+      let inputQty = divSettingsQuantity.appendChild(creaInputQty)
+      inputQty.type = ('number')
+      inputQty.classList.add("itemQuantity")
+      inputQty.name = ( "itemQuantity")
+      inputQty.min = ( 1)
+      inputQty.max = ( 100)
+      inputQty.setAttribute("value", panier.quantity)
+
+      //                creation delete
+      const creaDivDelete = document.createElement('div')
+      let divDelete = divSettings.appendChild(creaDivDelete)
+      divDelete.classList.add("cart__item__content__settings__delete")
+      
+      //                creation paragraphe delete
+      const creaParagrapheDelete= document.createElement('p');
+      let paragrapheDelete = divDelete.appendChild(creaParagrapheDelete)
+      paragrapheDelete.classList.add("deleteItem")
+      paragrapheDelete.innerText=("Supprimer")
+
+      //paragrapheQty.innerText = (panier.quantity)
+ 
+        console.log(inputQty)
         //console.log(divDescription)
 
   })
@@ -68,20 +101,5 @@ cart.forEach(panier => {
       
     });
 
-  
-   /* <section id="cart__items">
-    
-     
-         <div class="cart__item__content__settings">
-           <div class="cart__item__content__settings__quantity">
-             <p>Qté : </p>
-             <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="42">
-           </div>
-           <div class="cart__item__content__settings__delete">
-             <p class="deleteItem">Supprimer</p>
-           </div>
-         </div>
-       </div>
-     </article> -->
-   </section>*/
+
 
