@@ -9,9 +9,6 @@ fetch("http://localhost:3000/api/products/"+ id)
 })    
 .then(function(produit){
 
-    const nom = (produit.name)
-    //const imageProduit = (produit.imageUrl)
-    //const textAlt = (produit.imageUrl)
     const prixUnitaire= (produit.price)
     const description = document.getElementById('description')
     const title = document.getElementById('title')
