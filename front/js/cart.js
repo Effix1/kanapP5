@@ -27,7 +27,9 @@ cart.forEach(panier => {
         inputQuantity.name = ('itemQuantity');
         inputQuantity.min = (0);
         inputQuantity.max = (100);
+        
         let pQuantity = inputQuantity.setAttribute('value', panier.quantity) ;
+        const quantity = cart.map(cart=>cart.quantity)
         const divDelete = creaDiv(divSettings, "cart__item__content__settings__delete");
         const paraDelete = creaParagraph(divDelete, "Supprimer");
         paraDelete.classList.add('deleteItem');
@@ -38,12 +40,9 @@ cart.forEach(panier => {
         console.log(panier.quantity)
         paraDelete.addEventListener('click', function(){
             console.log('cest clické')
-            if(panier.quantity>=1){
-               panier.quantity-1
-               console.log(panier.quantity)
-
-               return panier.quantity
-            }
+            quantity.length-1
+            let deleteQuantity = quantity[0]-1
+            return deleteQuantity
         })
         
         const totalQuantity = document.querySelector('#totalQuantity')
