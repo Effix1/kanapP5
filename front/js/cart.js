@@ -10,7 +10,8 @@ cart.forEach(panier => {
     .then (function(produit){
      
         const sectionItem = document.getElementById('cart__items');
-        const article = creaArticle(sectionItem, "cart__item");
+
+        const article = creaArticle(sectionItem, "cart__item",panier);
         const divImage = creaDiv(article, "cart__item__img"); 
         creaImg(divImage, produit.imageUrl);
         const divContent = creaDiv(article, "cart__item__content");
@@ -27,42 +28,50 @@ cart.forEach(panier => {
         inputQuantity.name = ('itemQuantity');
         inputQuantity.min = (0);
         inputQuantity.max = (100);
+      //////////////////////////////////////   Supression   /////////////////////////////////////////////////////
+      inputQuantity.setAttribute('value', panier.quantity) ;
+      const divDelete = creaDiv(divSettings, "cart__item__content__settings__delete");
+      const paraDelete = creaParagraph(divDelete, "Supprimer");
+      paraDelete.classList.add('deleteItem');
+
+      paraDelete.addEventListener('click', function(event){                                                                           
+       const article = event.target.closest("article.cart__item")                                                                            
+       const setId = article.dataset.id                                                                                                   
+       const setColor = article.dataset.color                                                                                                                                                       
+       const identifiantExistant =cart.findIndex(item =>item.id == setId && item.color == setColor)                                       
+       cart.splice(identifiantExistant, 1)                                                                                            
+       localStorage.setItem('caddy', JSON.stringify(cart))                                                                                                                  
+       article.remove()                                                                                                                     
+       
+                                                                                                                    
+    })                                                                                                                                       
+    ///////////////////////////////////////   Changement total   ////////////////////////////////////////////////////////                                  
+   
+    inputQuantity.addEventListener('change', function (event){
+        newQuantity(event, cart)
+    })
+    function newQuantity(event){
+        const inputValue = Number (event.target.closest('input.itemQuantity').value)
+        let valeurIndex = (inputValue-(panier.quantity))
+        dsiplayTotalPrice(document.getElementById('totalPrice'),valeurIndex, produit.price)
+        dsiplayTotalQuantity(document.getElementById('totalQuantity'),valeurIndex)
+    }
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////
+        dsiplayTotalPrice(document.getElementById('totalPrice'),panier.quantity, produit.price)
+        dsiplayTotalQuantity( document.getElementById('totalQuantity'),panier.quantity)
         
-        let pQuantity = inputQuantity.setAttribute('value', panier.quantity) ;
-        const quantity = cart.map(cart=>cart.quantity)
-        const divDelete = creaDiv(divSettings, "cart__item__content__settings__delete");
-        const paraDelete = creaParagraph(divDelete, "Supprimer");
-        paraDelete.classList.add('deleteItem');
-     
-        const caddy = JSON.parse (localStorage.getItem('caddy'))|| []
-        console.log(caddy)
-
-        console.log(panier.quantity)
-        paraDelete.addEventListener('click', function(){
-            console.log('cest clické')
-            quantity.length-1
-            let deleteQuantity = quantity[0]-1
-            return deleteQuantity
-        })
-        
-        const totalQuantity = document.querySelector('#totalQuantity')
-
-         
-    dsiplayTotalPrice(document.getElementById('totalPrice'),panier.quantity, produit.price)
-    dsiplayTotalQuantity(document.getElementById('totalQuantity'),panier.quantity)
-    console.log(panier.quantity)
-
     }) 
     
 });
 
-
-
 //            ***** fonction article *****
-function creaArticle (target, classe){
+function creaArticle (target, classe, panier){
     let article = document.createElement('article')
     target.appendChild(article)
     article.classList.add(classe)
+    article.dataset.id=panier.id
+    article.dataset.color=panier.color
+
     return article;
 }
 //              ***** fonction crea div *****
@@ -101,6 +110,14 @@ function creaInput (target){
     return input
 }
 
+//               ***** fonction display quantité *****
+
+let nombre = 0
+function dsiplayTotalQuantity( target, quantity) {  
+    nombre += quantity  
+    target.innerText = (nombre)      
+}
+
 //                ***** fonction display prix total *****
 
 let somme = 0
@@ -111,13 +128,7 @@ function dsiplayTotalPrice(target, quantity, price) {
                   
 }
 
-//               ***** fonction display quantité *****
 
-let nombre = 0 
-function dsiplayTotalQuantity(target, quantity) {  
-    nombre+= quantity  
-    target.innerText = (nombre)             
-}
 
 //              ***** cretion fonction getpluriel *****
 function getpluriel (nb) {
