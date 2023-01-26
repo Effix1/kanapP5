@@ -56,7 +56,7 @@ fetch("http://localhost:3000/api/products/"+ id)
                 alert('veuillez choisir une couleur SVP')
             }
             else {
-                alert('Vous avez choisi ' + quantity + " "+produit.name + "" + colors)
+                alert('Vous avez choisi ' + quantity + " "+produit.name + " " + colors)
                 const cart = JSON.parse (localStorage.getItem('caddy'))|| []
                 console.log(cart)
                 const identifiantExistant =cart.findIndex(item =>item.id == id && item.color == colors)

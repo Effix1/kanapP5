@@ -41,7 +41,9 @@ cart.forEach(panier => {
        const identifiantExistant =cart.findIndex(item =>item.id == setId && item.color == setColor)                                       
        cart.splice(identifiantExistant, 1)                                                                                            
        localStorage.setItem('caddy', JSON.stringify(cart))                                                                                                                  
-       article.remove()                                                                                                                     
+       article.remove() 
+       dsiplayTotalPrice(document.getElementById('totalPrice'),-(panier.quantity), produit.price)
+        dsiplayTotalQuantity( document.getElementById('totalQuantity'),-(panier.quantity))                                                                                                                    
        
                                                                                                                     
     })                                                                                                                                       
@@ -49,12 +51,20 @@ cart.forEach(panier => {
    
     inputQuantity.addEventListener('change', function (event){
         newQuantity(event, cart)
+        
     })
+    
     function newQuantity(event){
+       // console.log(dsiplayTotalQuantity)
         const inputValue = Number (event.target.closest('input.itemQuantity').value)
         let valeurIndex = (inputValue-(panier.quantity))
+        panier.quantity=inputValue
         dsiplayTotalPrice(document.getElementById('totalPrice'),valeurIndex, produit.price)
         dsiplayTotalQuantity(document.getElementById('totalQuantity'),valeurIndex)
+        console.log(cart)
+        
+        localStorage.setItem('caddy', JSON.stringify(cart))
+
     }
         ///////////////////////////////////////////////////////////////////////////////////////////////////////
         dsiplayTotalPrice(document.getElementById('totalPrice'),panier.quantity, produit.price)
@@ -63,6 +73,17 @@ cart.forEach(panier => {
     }) 
     
 });
+//               ***** fonction display quantité *****
+
+let nombre = 0
+function dsiplayTotalQuantity( target, quantity) {  
+    nombre += quantity  
+    target.innerText = (nombre)
+       console.log()      
+}
+
+
+
 
 //            ***** fonction article *****
 function creaArticle (target, classe, panier){
@@ -108,14 +129,6 @@ function creaInput (target){
     let input = document.createElement('input')
     target.appendChild(input)
     return input
-}
-
-//               ***** fonction display quantité *****
-
-let nombre = 0
-function dsiplayTotalQuantity( target, quantity) {  
-    nombre += quantity  
-    target.innerText = (nombre)      
 }
 
 //                ***** fonction display prix total *****
