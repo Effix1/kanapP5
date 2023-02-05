@@ -8,7 +8,7 @@ fetch("http://localhost:3000/api/products/"+ id)
     }    
 })    
 .then(function(produit){
-
+    
     const prixUnitaire= (produit.price)
     const description = document.getElementById('description')
     const title = document.getElementById('title')
@@ -43,7 +43,7 @@ fetch("http://localhost:3000/api/products/"+ id)
         title.innerText = produit.name
         price.innerText = produit.price
         const addToCart = document.getElementById('addToCart')
-  
+        
         addToCart.addEventListener("click", (e)=>{
             const quantity = parseInt(document.querySelector('#quantity').value) 
             
@@ -58,7 +58,6 @@ fetch("http://localhost:3000/api/products/"+ id)
             else {
                 alert('Vous avez choisi ' + quantity + " "+produit.name + " " + colors)
                 const cart = JSON.parse (localStorage.getItem('caddy'))|| []
-                console.log(cart)
                 const identifiantExistant =cart.findIndex(item =>item.id == id && item.color == colors)
                 
                 if (identifiantExistant==-1) {
@@ -69,34 +68,32 @@ fetch("http://localhost:3000/api/products/"+ id)
                         
                         
                     }
-                    console.log(prixUnitaire)
-                    console.log(cartItem)
                     cart.push(cartItem)
                 }else {
                     cart[identifiantExistant].quantity+=quantity
-                        }
-                        
-                        localStorage.setItem('caddy', JSON.stringify(cart))
-                        }
-                     //localStorage.setItem(id)
-                     
-                     
-                 } )
-                     
-           
-        }
-        const soloItem = creaItem()
-
-
-   
-
-   //     ****************       écoute du produit    *********************
+                }
+                
+                localStorage.setItem('caddy', JSON.stringify(cart))
+            }
+            //localStorage.setItem(id)
+            
+            
+        } )
+        
+        
+    }
+    const soloItem = creaItem()
     
-
-
-
-   //        *****************       array du produit *****************
-  
+    
+    
+    
+    //     ****************       écoute du produit    *********************
+    
+    
+    
+    
+    //        *****************       array du produit *****************
+    
 }
 )    
 
