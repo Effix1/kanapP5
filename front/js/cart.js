@@ -78,7 +78,7 @@ cart.forEach(panier => {
 
 document.querySelector('.cart__order__form').addEventListener('submit',function (event){//    empecher le formulaire d'etre soumis par le naviageteur 
     event.preventDefault()
-    console.log(cart.length)
+    
     // init
     document.getElementById('firstNameErrorMsg').innerText= ''
     let  formValid= true;
@@ -114,7 +114,7 @@ document.querySelector('.cart__order__form').addEventListener('submit',function 
         formValid = false   
     } 
     //verification du mail
-    const regex = /[\w-\.]+@ ([ \w-]+\.)+[\w-]{2,4} $ /g; 
+    const regex = /^\d{5}\s\w+$/; 
     if (regex.test(mail)) {
         document.getElementById('emailErrorMsg').innerText= 'le champ doit contenir une adresse mail valide'
         formValid = false   
@@ -124,54 +124,61 @@ document.querySelector('.cart__order__form').addEventListener('submit',function 
     
     // soumission du formulaire
     if (formValid){
-        const tab = document.querySelector(".cart__order__form")
         // objet à soumettre    
-        const body={ contact: {
-            firstName: firstName,
-            lastName: lastName,
-            address: address,
-            city: ville,
-            email: mail
-        },
-        products:["ssss"]
-    }
-    
-    
-    console.log(JSON.stringify(body))
-    let response =  fetch("http://localhost:3000/api/product/order", {
-    method: "POST",
-    headers: {
+        let body =  { 
+            contact : {
+                firstName:firstName,
+                lastName: lastName,
+                address: address, 
+                city: ville,
+                email: mail
+            },
+            products :retrieveId()
+        } 
         
-        'Content-Type': 'application/json;charset=utf-8'
-    },
-    body: JSON.stringify(body),   
-    });
+    ;
     
-    console.log(firstName)
+    //  fetch et post 
     
-    //products : [contact]    
-    /**
-    *
-    * Expects request to contain:
-    * contact: {
-    *   firstName: string,
-    *   lastName: string,
-    *   address: string,
-    *   city: string,
-    *   email: string
-    * }
-    * products: [string] <-- array of product _id
-    *
-    */
-    console.log('valid')
+    console.log(body)
+    async function fetchUsers () {
+        const r = await fetch("http://localhost:3000/api/products/order",{
+        method : "POST",
+        headers : {
+            "Accept": "application/json",
+            "Content-Type":"application/json"
+        },
+        
+        body: JSON.stringify(body)
+    })
+    console.log(r.json())
+    if (r.ok === true) {
+       return r.json();
+    }
+    throw new Error('Impossible de contacter le service WEB')
+    
+}
+fetchUsers()
 }else {
     console.log('invalid')
 }
 })
-function formFull (){
-    
-    return body
+
+//recuperation ID
+
+function retrieveId (){
+    let caddy = JSON.parse(localStorage.caddy);
+    const ids = []
+    for(let i =0; i<caddy.length ;i++){
+       let caddyId= (caddy[i].id)
+       ids.push(caddyId)
+
+    }
+    return ids
 }
+
+
+
 //               ***** fonction display quantité *****
 let nombre = 0
 function dsiplayTotalQuantity( target, quantity) {  
