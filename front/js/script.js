@@ -19,8 +19,8 @@ fetch("http://localhost:3000/api/products")
         const image = document.createElement('img');
         
         //                          fonction de création de l'article        
-        const creationArticle = (a, imageUrl, altTxt) => {
-            a.appendChild(link)
+        const creationArticle = (target, imageUrl, altTxt) => {
+            target.appendChild(link)
             link.appendChild(article)
             article.appendChild(image);
             article.appendChild(h3)

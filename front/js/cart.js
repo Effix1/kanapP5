@@ -136,43 +136,47 @@ document.querySelector('.cart__order__form').addEventListener('submit',function 
             products :retrieveId()
         } 
         
-    ;
-    
-    //  fetch et post 
-    
-    console.log(body)
-    async function fetchUsers () {
-        const r = await fetch("http://localhost:3000/api/products/order",{
-        method : "POST",
-        headers : {
-            "Accept": "application/json",
-            "Content-Type":"application/json"
-        },
+        ;
         
-        body: JSON.stringify(body)
-    })
-    console.log(r.json())
-    if (r.ok === true) {
-       return r.json();
+        //  fetch et post 
+        
+        
+        async function fetchUsers () {
+            const r = await fetch("http://localhost:3000/api/products/order",{
+            method : "POST",
+            headers : {
+                "Accept": "application/json",
+                "Content-Type":"application/json"
+            },
+            body: JSON.stringify(body), 
+        })
+        if (r.ok === true) {
+            return r.json();
+        }
+        throw new Error('Impossible de contacter le service WEB')
+        
     }
-    throw new Error('Impossible de contacter le service WEB')
-    
-}
-fetchUsers()
-}else {
-    console.log('invalid')
-}
+    fetchUsers().then(data=>{
+        const dataId =data.orderId;
+        ///P5-Dev-Web-Kanap/front/html/cart.html
+        window.location.href="/P5-Dev-Web-Kanap/front/html/confirmation.html?dataId=" + dataId
+        console.log(dataId)
+    })
+        console.log("bonjour")
+    }else {
+        console.log('invalid')
+    }
 })
-
+console.log(cart)
 //recuperation ID
 
 function retrieveId (){
     let caddy = JSON.parse(localStorage.caddy);
     const ids = []
     for(let i =0; i<caddy.length ;i++){
-       let caddyId= (caddy[i].id)
-       ids.push(caddyId)
-
+        let caddyId= (caddy[i].id)
+        ids.push(caddyId)
+        
     }
     return ids
 }
