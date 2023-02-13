@@ -71,29 +71,12 @@ fetch("http://localhost:3000/api/products/"+ id)
                     cart.push(cartItem)
                 }else {
                     cart[identifiantExistant].quantity+=quantity
-                }
-                
+                }  
                 localStorage.setItem('caddy', JSON.stringify(cart))
-            }
-            //localStorage.setItem(id)
-            
-            
-        } )
-        
-        
+            }   
+        } )   
     }
-    creaItem()
-    
-    
-    
-    
-    //     ****************       écoute du produit    *********************
-    
-    
-    
-    
-    //        *****************       array du produit *****************
-    
+    creaItem()   
 }
 )    
 

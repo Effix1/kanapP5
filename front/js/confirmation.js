@@ -1,3 +1,8 @@
-fetch ('http://localhost:3000/api/products')
-.then(r=>r.text())
-.then(body=>console.log(body))
+let url = new URL(window.location.href);
+const id = url.searchParams.get('dataId');
+
+document.getElementById('orderId').innerText=id
+
+localStorage.removeItem('caddy')
+
+

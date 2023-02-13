@@ -26,8 +26,8 @@ cart.forEach(panier => {
         inputQuantity.type = ('number');
         inputQuantity.classList.add('itemQuantity');
         inputQuantity.name = ('itemQuantity');
-        inputQuantity.min = (0);
-        inputQuantity.max = (100);
+        inputQuantity.min = ("0");
+        inputQuantity.max = ("100");
         //////////////////////////////////////   Supression   /////////////////////////////////////////////////////
         inputQuantity.setAttribute('value', panier.quantity) ;
         const divDelete = creaDiv(divSettings, "cart__item__content__settings__delete");
@@ -55,14 +55,11 @@ cart.forEach(panier => {
         })
         
         function newQuantity(event){
-            // console.log(dsiplayTotalQuantity)
             const inputValue = Number (event.target.closest('input.itemQuantity').value)
             let valeurIndex = (inputValue-(panier.quantity))
             panier.quantity=inputValue
             dsiplayTotalPrice(document.getElementById('totalPrice'),valeurIndex, produit.price)
             dsiplayTotalQuantity(document.getElementById('totalQuantity'),valeurIndex)
-            console.log(cart)
-            
             localStorage.setItem('caddy', JSON.stringify(cart))
             
         }
@@ -118,7 +115,6 @@ document.querySelector('.cart__order__form').addEventListener('submit',function 
     if (regex.test(mail)) {
         document.getElementById('emailErrorMsg').innerText= 'le champ doit contenir une adresse mail valide'
         formValid = false   
-        console.log(regex.test)
     } ;
     
     
@@ -160,14 +156,12 @@ document.querySelector('.cart__order__form').addEventListener('submit',function 
         const dataId =data.orderId;
         ///P5-Dev-Web-Kanap/front/html/cart.html
         window.location.href="/P5-Dev-Web-Kanap/front/html/confirmation.html?dataId=" + dataId
-        console.log(dataId)
+      
     })
-        console.log("bonjour")
     }else {
         console.log('invalid')
     }
 })
-console.log(cart)
 //recuperation ID
 
 function retrieveId (){
