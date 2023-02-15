@@ -8,23 +8,17 @@ fetch("http://localhost:3000/api/products/"+ id)
     }    
 })    
 .then(function(produit){
-    
-    const prixUnitaire= (produit.price)
     const description = document.getElementById('description')
     const title = document.getElementById('title')
     const price = document.getElementById('price')
-    
     const itemImg = document.getElementsByClassName('item__img')
     const firstItem = itemImg[0];
     const image = document.createElement('img')
-    
     const creaImage = () => {
         image.setAttribute('src', produit.imageUrl)
         image.setAttribute('alt',produit.altTxt)
         firstItem.appendChild (image)
     }
-    
-    
     
     const choixCouleur = () => {
         for(let couleur of produit.colors){
@@ -36,17 +30,14 @@ fetch("http://localhost:3000/api/products/"+ id)
     }
     
     const creaItem = () => {
-        
         choixCouleur();
         creaImage();
         description.innerText = produit.description
         title.innerText = produit.name
         price.innerText = produit.price
         const addToCart = document.getElementById('addToCart')
-        
-        addToCart.addEventListener("click", (e)=>{
+        addToCart.addEventListener("click", ()=>{
             const quantity = parseInt(document.querySelector('#quantity').value) 
-            
             const colors = document.querySelector('#colors').value
             if ( colors=="" && quantity == 0){
                 alert('veuillez choisir une couleur et une quantité SVP ')
@@ -65,8 +56,6 @@ fetch("http://localhost:3000/api/products/"+ id)
                         id:id,
                         color:colors,
                         quantity:quantity,
-                        
-                        
                     }
                     cart.push(cartItem)
                 }else {
