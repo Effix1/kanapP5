@@ -2,14 +2,15 @@
 fetch("http://localhost:3000/api/products")
 .then(function(res){
     if (res.ok) {
-        return res.json();
-        
+        console.log(res)
+
+        return res.json(); 
     }
 })
 //           ***** 
 .then(function(products){
+    console.log(products)
     products.forEach(produit => {
-        console.log(products)
         ////////////////////////////////constante/////////////////////////////////////////
         const items = document.getElementById('items')
         const link = document.createElement('a');

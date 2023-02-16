@@ -10,17 +10,21 @@ cart.forEach(panier => {
     .then (function(produit){
         
         const sectionItem = document.getElementById('cart__items');
-        
         const article = creaArticle(sectionItem, "cart__item",panier);
         const divImage = creaDiv(article, "cart__item__img"); 
+        //             ***** fonction création image *****
         creaImg(divImage, produit.imageUrl);
+        
         const divContent = creaDiv(article, "cart__item__content");
         const divDescription = creaDiv(divContent, "cart__item__content__description");
+        
         creaH2(divDescription, produit.name);
         creaParagraph(divDescription, panier.color);
         creaParagraph(divDescription, produit.price+',00 €');
+        
         const divSettings = creaDiv(divContent, "cart__item__content__settings");
         const settingsQuantity = creaDiv(divSettings, 'cart__item__content__settings__quantity');
+        
         creaParagraph(settingsQuantity , "Qté : ");
         const inputQuantity = creaInput (settingsQuantity);
         inputQuantity.type = ('number');
@@ -89,32 +93,35 @@ document.querySelector('.cart__order__form').addEventListener('submit',function 
     if (cart.length==0){
         formValid = false
         alert("Veuillez choisir un produit")
-    }
+    } 
     //verification du prénom 
     if (firstName.length < 3) {
         document.getElementById('firstNameErrorMsg').innerText= 'le prénom doit faire au moins 3 caractères'
-        formValid = false   
+        formValid = false  
     }
     //verification du nom 
     if (lastName.length < 3) {
         document.getElementById('lastNameErrorMsg').innerText= 'le  nom doit faire au moins 3 caractères'
-        formValid = false   
+        formValid = false    
     }
     //verification de l'adresse
     if (address.length < 3) {
         document.getElementById('addressErrorMsg').innerText= 'l\'adresse doit faire au moin 3 caractere'
-        formValid = false   
+        formValid = false 
+        
     }
     //verification de la ville
     if (ville.length < 3) {
         document.getElementById('cityErrorMsg').innerText= 'le champ doit faire au moins 3 caractères'
-        formValid = false   
+        formValid = false 
+        
     } 
     //verification du mail
-    const regex = /^\d{5}\s\w+$/; 
-    if (regex.test(mail)) {
+    const regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/; 
+    if (!regex.test(mail)) {
         document.getElementById('emailErrorMsg').innerText= 'le champ doit contenir une adresse mail valide'
-        formValid = false   
+        formValid = false 
+        
     } ;
     
     
@@ -155,12 +162,12 @@ document.querySelector('.cart__order__form').addEventListener('submit',function 
     fetchUsers().then(data=>{
         const dataId =data.orderId;
         ///P5-Dev-Web-Kanap/front/html/cart.html
-        window.location.href="/P5-Dev-Web-Kanap/front/html/confirmation.html?dataId=" + dataId
-      
+        window.location.href="confirmation.html?dataId=" + dataId
+        
     })
-    }else {
-        console.log('invalid')
-    }
+}else {
+    console.log('invalid')
+}
 })
 //recuperation ID
 
