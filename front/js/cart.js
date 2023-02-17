@@ -39,7 +39,7 @@ cart.forEach(panier => {
         paraDelete.classList.add('deleteItem');
         
         paraDelete.addEventListener('click', function(event){                                                                           
-            const article = event.target.closest("article.cart__item")                                                                            
+            const article = event.target.closest("article.cart__item")                                                                           
             const setId = article.dataset.id                                                                                                   
             const setColor = article.dataset.color                                                                                                                                                       
             const identifiantExistant =cart.findIndex(item =>item.id == setId && item.color == setColor)                                       
@@ -65,7 +65,16 @@ cart.forEach(panier => {
             dsiplayTotalPrice(document.getElementById('totalPrice'),valeurIndex, produit.price)
             dsiplayTotalQuantity(document.getElementById('totalQuantity'),valeurIndex)
             localStorage.setItem('caddy', JSON.stringify(cart))
-            
+
+            if(inputValue===0){
+                const article = event.target.closest("article.cart__item")                                                                           
+                const setId = article.dataset.id                                                                                                   
+                const setColor = article.dataset.color                                                                                                                                                       
+                const identifiantExistant =cart.findIndex(item =>item.id == setId && item.color == setColor)                                       
+                cart.splice(identifiantExistant, 1)                                                                                            
+                localStorage.setItem('caddy', JSON.stringify(cart))                                                                                                                  
+                article.remove() 
+            }      
         }
         ///////////////////////////////////////////////////////////////////////////////////////////////////////
         dsiplayTotalPrice(document.getElementById('totalPrice'),panier.quantity, produit.price)
@@ -95,24 +104,24 @@ document.querySelector('.cart__order__form').addEventListener('submit',function 
         alert("Veuillez choisir un produit")
     } 
     //verification du prénom 
-    if (firstName.length < 3) {
-        document.getElementById('firstNameErrorMsg').innerText= 'le prénom doit faire au moins 3 caractères'
+    if (firstName.length < 2) {
+        document.getElementById('firstNameErrorMsg').innerText= 'le prénom doit faire au moins 2 caractères'
         formValid = false  
     }
     //verification du nom 
-    if (lastName.length < 3) {
-        document.getElementById('lastNameErrorMsg').innerText= 'le  nom doit faire au moins 3 caractères'
+    if (lastName.length < 2) {
+        document.getElementById('lastNameErrorMsg').innerText= 'le  nom doit faire au moins 2 caractères'
         formValid = false    
     }
     //verification de l'adresse
-    if (address.length < 3) {
-        document.getElementById('addressErrorMsg').innerText= 'l\'adresse doit faire au moin 3 caractere'
+    if (address.length < 2) {
+        document.getElementById('addressErrorMsg').innerText= 'l\'adresse doit faire au moin 2 caractere'
         formValid = false 
         
     }
     //verification de la ville
-    if (ville.length < 3) {
-        document.getElementById('cityErrorMsg').innerText= 'le champ doit faire au moins 3 caractères'
+    if (ville.length < 2) {
+        document.getElementById('cityErrorMsg').innerText= 'le champ doit faire au moins 2 caractères'
         formValid = false 
         
     } 
