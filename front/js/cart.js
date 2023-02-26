@@ -8,7 +8,6 @@ cart.forEach(panier => {
         
     })
     .then (function(produit){
-        
         const sectionItem = document.getElementById('cart__items');
         const article = creaArticle(sectionItem, "cart__item",panier);
         const divImage = creaDiv(article, "cart__item__img"); 
@@ -30,8 +29,8 @@ cart.forEach(panier => {
         inputQuantity.type = ('number');
         inputQuantity.classList.add('itemQuantity');
         inputQuantity.name = ('itemQuantity');
-        inputQuantity.min = ("0");
-        inputQuantity.max = ("100");
+        inputQuantity.min = (0);
+        inputQuantity.max = (100);
         //////////////////////////////////////   Supression   /////////////////////////////////////////////////////
         inputQuantity.setAttribute('value', panier.quantity) ;
         const divDelete = creaDiv(divSettings, "cart__item__content__settings__delete");
@@ -46,8 +45,8 @@ cart.forEach(panier => {
             cart.splice(identifiantExistant, 1)                                                                                            
             localStorage.setItem('caddy', JSON.stringify(cart))                                                                                                                  
             article.remove() 
-            dsiplayTotalPrice(document.getElementById('totalPrice'),-(panier.quantity), produit.price)
-            dsiplayTotalQuantity( document.getElementById('totalQuantity'),-(panier.quantity))                                                                                                                    
+            displayTotalPrice(document.getElementById('totalPrice'),-(panier.quantity), produit.price)
+            displayTotalQuantity( document.getElementById('totalQuantity'),-(panier.quantity))                                                                                                                    
             
             
         })                                                                                                                                       
@@ -62,23 +61,34 @@ cart.forEach(panier => {
             const inputValue = Number (event.target.closest('input.itemQuantity').value)
             let valeurIndex = (inputValue-(panier.quantity))
             panier.quantity=inputValue
-            dsiplayTotalPrice(document.getElementById('totalPrice'),valeurIndex, produit.price)
-            dsiplayTotalQuantity(document.getElementById('totalQuantity'),valeurIndex)
+            displayTotalPrice(document.getElementById('totalPrice'),valeurIndex, produit.price)
+            displayTotalQuantity(document.getElementById('totalQuantity'),valeurIndex)
             localStorage.setItem('caddy', JSON.stringify(cart))
-
-            if(inputValue===0){
+            
+            if(inputValue<=0){
                 const article = event.target.closest("article.cart__item")                                                                           
                 const setId = article.dataset.id                                                                                                   
                 const setColor = article.dataset.color                                                                                                                                                       
                 const identifiantExistant =cart.findIndex(item =>item.id == setId && item.color == setColor)                                       
                 cart.splice(identifiantExistant, 1)                                                                                            
+                article.remove()
+                displayTotalQuantity( document.getElementById('totalQuantity'),-(panier.quantity)) 
+                displayTotalPrice(document.getElementById('totalPrice'),-(panier.quantity), produit.price) 
+            }
+            
+            if (inputValue > 100) {
+                console.log(inputQuantity.value);
+                inputQuantity.value = 100;
+                panier.quantity = 100;
+                console.log(panier.quantity);
+                displayTotalQuantity(document.getElementById('totalQuantity'), -(inputValue - 100));
+                displayTotalPrice(document.getElementById('totalPrice'), -(inputValue - 100), produit.price);
                 localStorage.setItem('caddy', JSON.stringify(cart))                                                                                                                  
-                article.remove() 
-            }      
+            }     
         }
         ///////////////////////////////////////////////////////////////////////////////////////////////////////
-        dsiplayTotalPrice(document.getElementById('totalPrice'),panier.quantity, produit.price)
-        dsiplayTotalQuantity( document.getElementById('totalQuantity'),panier.quantity)
+        displayTotalPrice(document.getElementById('totalPrice'),panier.quantity, produit.price)
+        displayTotalQuantity( document.getElementById('totalQuantity'),panier.quantity)
         
     }) 
     
@@ -91,6 +101,10 @@ document.querySelector('.cart__order__form').addEventListener('submit',function 
     
     // init
     document.getElementById('firstNameErrorMsg').innerText= ''
+    document.getElementById('lastNameErrorMsg').innerText= ''
+    document.getElementById('addressErrorMsg').innerText= ''
+    document.getElementById('cityErrorMsg').innerText= ''
+    document.getElementById('emailErrorMsg').innerText= ''
     let  formValid= true;
     //  variable formulaire 
     let firstName = document.getElementById('firstName').value
@@ -104,30 +118,35 @@ document.querySelector('.cart__order__form').addEventListener('submit',function 
         alert("Veuillez choisir un produit")
     } 
     //verification du prénom 
-    if (firstName.length < 2) {
-        document.getElementById('firstNameErrorMsg').innerText= 'le prénom doit faire au moins 2 caractères'
+    const regexAlpha = /^[A-Za-zïçéèëà._-]+$/;
+    if (!regexAlpha.test(firstName)||firstName.length<2) {
+        document.getElementById('firstNameErrorMsg').innerText= 'Attention prénom invalide'
         formValid = false  
     }
     //verification du nom 
-    if (lastName.length < 2) {
-        document.getElementById('lastNameErrorMsg').innerText= 'le  nom doit faire au moins 2 caractères'
+    
+    if (!regexAlpha.test(lastName)||lastName.length < 2) {
+        document.getElementById('lastNameErrorMsg').innerText= 'Attention nom invalide'
         formValid = false    
     }
     //verification de l'adresse
-    if (address.length < 2) {
-        document.getElementById('addressErrorMsg').innerText= 'l\'adresse doit faire au moin 2 caractere'
+    //******************************************************regex***************************************************** */
+    const regexAlphaNum = /^[A-Za-z0-9\s.ïçéèëà_-]+$/
+    if (!regexAlphaNum.test(address)) {
+        document.getElementById('addressErrorMsg').innerText= 'l\'adresse doit etre valide'
         formValid = false 
         
     }
     //verification de la ville
-    if (ville.length < 2) {
+    //******************************************************regex***************************************************** */
+    if (!regexAlphaNum.test(ville)) {
         document.getElementById('cityErrorMsg').innerText= 'le champ doit faire au moins 2 caractères'
         formValid = false 
         
     } 
     //verification du mail
-    const regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/; 
-    if (!regex.test(mail)) {
+    const regexMail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/; 
+    if (!regexMail.test(mail)) {
         document.getElementById('emailErrorMsg').innerText= 'le champ doit contenir une adresse mail valide'
         formValid = false 
         
@@ -147,7 +166,6 @@ document.querySelector('.cart__order__form').addEventListener('submit',function 
             },
             products :retrieveId()
         } 
-        
         ;
         
         //  fetch et post 
@@ -170,7 +188,6 @@ document.querySelector('.cart__order__form').addEventListener('submit',function 
     }
     fetchUsers().then(data=>{
         const dataId =data.orderId;
-        ///P5-Dev-Web-Kanap/front/html/cart.html
         window.location.href="confirmation.html?dataId=" + dataId
         
     })
@@ -185,17 +202,14 @@ function retrieveId (){
     const ids = []
     for(let i =0; i<caddy.length ;i++){
         let caddyId= (caddy[i].id)
-        ids.push(caddyId)
-        
+        ids.push(caddyId)  
     }
     return ids
 }
 
-
-
 //               ***** fonction display quantité *****
 let nombre = 0
-function dsiplayTotalQuantity( target, quantity) {  
+function displayTotalQuantity( target, quantity) {  
     nombre += quantity  
     target.innerText = (nombre)      
 }
@@ -248,7 +262,7 @@ function creaInput (target){
 //                ***** fonction display prix total *****
 
 let somme = 0
-function dsiplayTotalPrice(target, quantity, price) {  
+function displayTotalPrice(target, quantity, price) {  
     let totalPrixItem =quantity*price
     somme+= totalPrixItem  
     target.innerText = (somme+',00 ')

@@ -41,8 +41,9 @@ fetch("http://localhost:3000/api/products/"+ id)
             const colors = document.querySelector('#colors').value
             if ( colors=="" && quantity == 0){
                 alert('veuillez choisir une couleur et une quantité SVP ')
-            }else if (quantity == 0)  {
-                alert('veuillez choisir une quantity SVP')
+            }else if (quantity < 1 || quantity > 100 || quantity === '' || Math.floor(quantity) !== quantity) {
+                console.log("quantity")
+                alert('Veuillez choisir une quantité comprise entre 1 et 100 SVP')
             }else if (colors == ""){
                 alert('veuillez choisir une couleur SVP')
             }
