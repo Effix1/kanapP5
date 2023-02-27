@@ -77,10 +77,8 @@ cart.forEach(panier => {
             }
             
             if (inputValue > 100) {
-                console.log(inputQuantity.value);
                 inputQuantity.value = 100;
                 panier.quantity = 100;
-                console.log(panier.quantity);
                 displayTotalQuantity(document.getElementById('totalQuantity'), -(inputValue - 100));
                 displayTotalPrice(document.getElementById('totalPrice'), -(inputValue - 100), produit.price);
                 localStorage.setItem('caddy', JSON.stringify(cart))                                                                                                                  
@@ -118,29 +116,29 @@ document.querySelector('.cart__order__form').addEventListener('submit',function 
         alert("Veuillez choisir un produit")
     } 
     //verification du prénom 
-    const regexAlpha = /^[A-Za-zïçéèëà._-]+$/;
+    const regexAlpha = /^[A-Za-zïçéèëà\s._-]{2,40}$/;
+    ;
     if (!regexAlpha.test(firstName)||firstName.length<2) {
         document.getElementById('firstNameErrorMsg').innerText= 'Attention prénom invalide'
         formValid = false  
     }
     //verification du nom 
-    
-    if (!regexAlpha.test(lastName)||lastName.length < 2) {
+
+    if (!regexAlpha.test(lastName)) {
         document.getElementById('lastNameErrorMsg').innerText= 'Attention nom invalide'
         formValid = false    
     }
     //verification de l'adresse
-    //******************************************************regex***************************************************** */
-    const regexAlphaNum = /^[A-Za-z0-9\s.ïçéèëà_-]+$/
+
+    const regexAlphaNum = /^[\w\sïçéèëà_-]{2,200}$/
     if (!regexAlphaNum.test(address)) {
         document.getElementById('addressErrorMsg').innerText= 'l\'adresse doit etre valide'
         formValid = false 
         
     }
     //verification de la ville
-    //******************************************************regex***************************************************** */
-    if (!regexAlphaNum.test(ville)) {
-        document.getElementById('cityErrorMsg').innerText= 'le champ doit faire au moins 2 caractères'
+    if (!regexAlpha.test(ville)) {
+        document.getElementById('cityErrorMsg').innerText= 'Veuillez indiquer un nom de ville correct'
         formValid = false 
         
     } 
